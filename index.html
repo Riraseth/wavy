@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <title>Notatnik inwestora</title>
+</head>
+
+<body>
+  <h1>Notatnik inwestora</h1>
+  <form id="form">
+    <div class="">
+      <label for="voivodeship">Województwo</label>
+      <select name="voivodeship" id="voivodeship">
+        <option value="" disabled selected>Wybierz Województwo</option>
+      </select>
+    </div>
+    <div class="">
+      <label for="city">Miasto</label>
+      <select name="city" id="city">
+      </select>
+    </div>
+    <div class="">
+      <label for="street">Ulica</label>
+      <input type="text" name="street" id="street">
+    </div>
+    <div class="">
+      <label for="note">Notatka</label>
+      <textarea name="note" id="note" cols="30" rows="10"></textarea>
+    </div>
+
+    <button type="button" id="reset">Reset</button>
+    <button type="button" id="save">Zapisz</button>
+
+  </form>
+
+  <table id="table">
+    <thead>
+      <tr>
+        <th>Adres</th>
+        <th>Notatka</th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+
+  <script src="js/main.js"></script>
+</body>
+
+</html>
