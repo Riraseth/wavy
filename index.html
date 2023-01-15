@@ -6,49 +6,61 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="style.css">
+  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
   <title>Notatnik inwestora</title>
 </head>
 
 <body>
-  <h1>Notatnik inwestora</h1>
-  <form id="form">
-    <div class="">
-      <label for="voivodeship">Województwo</label>
-      <select name="voivodeship" id="voivodeship">
-        <option value="" disabled selected>Wybierz Województwo</option>
-      </select>
-    </div>
-    <div class="">
-      <label for="city">Miasto</label>
-      <select name="city" id="city">
-      </select>
-    </div>
-    <div class="">
-      <label for="street">Ulica</label>
-      <input type="text" name="street" id="street">
-    </div>
-    <div class="">
-      <label for="note">Notatka</label>
-      <textarea name="note" id="note" cols="30" rows="10"></textarea>
-    </div>
+  <section>
 
-    <button type="button" id="reset">Reset</button>
-    <button type="button" id="save">Zapisz</button>
+    <h1>Notatnik inwestora</h1>
+    <form id="form" class="form">
+      <div class="form__select">
+        <label for="voivodeship">Województwo</label>
+        <select name="voivodeship" id="voivodeship">
+          <option value="" disabled selected>Wybierz Województwo</option>
+        </select>
+      </div>
+      <div class="form__select">
+        <label for="city">Miasto</label>
+        <select name="city" id="city">
+        </select>
+      </div>
+      <div class="for__input">
+        <label for="street">Ulica</label>
+        <input type="text" name="street" id="street">
+      </div>
+      <div class="form__textarea">
+        <label for="note">Notatka</label>
+        <textarea name="note" id="note" cols="30" rows="10"></textarea>
+      </div>
+      <div class="form__buttons">
+        <button type="button" class="form__btn form__btn--reset" id="reset">Reset</button>
+        <button type="submit" class="form__btn form__btn--submit" id="save">Zapisz</button>
+      </div>
 
-  </form>
-
-  <table id="table">
-    <thead>
-      <tr>
-        <th>Adres</th>
-        <th>Notatka</th>
-      </tr>
-    </thead>
-    <tbody>
-    </tbody>
-  </table>
-
-  <script src="js/main.js"></script>
+    </form>
+    <div class="table-wrapper">
+      <div class="table-scroll">
+        <table id="table" class="table first-table">
+          <thead>
+            <tr>
+              <th>Województwo</th>
+              <th>Miasto</th>
+              <th>Ulica</th>
+              <th>Notatka</th>
+            </tr>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div id="root"></div>
+  </section>
+  <script type="module" src="script-compiled.js"></script>
+  <script src="main.js"></script>
 </body>
 
 </html>

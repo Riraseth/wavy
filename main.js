@@ -1,13 +1,14 @@
-mainUrl = 'https://wavy-media-proxy.wavyapps.com/investors-notebook/inst5/';
-voivodeshipUrl =
+const mainUrl =
+  'https://wavy-media-proxy.wavyapps.com/investors-notebook/inst5/';
+const voivodeshipUrl =
   'https://wavy-media-proxy.wavyapps.com/investors-notebook/inst5/data/wojewodztwa.json';
-cityUrl =
+const cityUrl =
   'https://wavy-media-proxy.wavyapps.com/investors-notebook/inst5/data/miasta.json';
 
-urlNewest =
+const urlNewest =
   'https://wavy-media-proxy.wavyapps.com/investors-notebook/inst5/?action=get_entries';
 
-entryUrl =
+const entryUrl =
   'https://wavy-media-proxy.wavyapps.com/investors-notebook/inst5/?action=get_entry&entry_id=';
 
 const voivodeshipSelect = document.querySelector('#voivodeship');
@@ -25,10 +26,10 @@ let selectedVoivo;
     .then((data) => setVovoideships(data));
 })();
 
-function fetchCities() {
+function fetchCities(selectedCity) {
   fetch(cityUrl)
     .then((response) => response.json())
-    .then((data) => setCities(data));
+    .then((data) => setCities(data, selectedCity));
 }
 
 (function fetchNewest() {
@@ -54,11 +55,16 @@ function setVovoideships(data) {
   });
 }
 
-function setCities(data) {
+function setCities(data, selectedCity) {
   const cities = data.filter((item) => selectedVoivo == item.voivodeship_id);
   cities.forEach((city, i) => {
     citySelect[i] = new Option(city.name, city.id);
   });
+  if (selectedCity) {
+    document
+      .evaluate(`//option[text()="${selectedCity.trim()}"]`, document)
+      .iterateNext().selected = 'selected';
+  }
 }
 
 voivodeshipSelect.addEventListener('change', function () {
@@ -77,25 +83,37 @@ reset.addEventListener('click', function () {
   history.pushState(null, '', newUrl);
 });
 
-save.addEventListener('click', function () {
+save.addEventListener('click', function (e) {
+  e.preventDefault();
   const voivodeship = [...voivodeshipSelect.options].find(
     (option) => option.selected
   )?.text;
   const city = [...citySelect.options].find((option) => option.selected)?.text;
-  fetch(mainUrl, {
-    method: 'POST',
-    body: JSON.stringify({
+  const postData = {
+    entry: {
       Address: `${voivodeship},${city},${street.value}`,
       Notes: note.value,
-    }),
-  }).then((response) => console.log(response));
-  // .then((json) => console.log(json));
+    },
+  };
+
+  fetch(mainUrl, {
+    method: 'POST',
+    body: JSON.stringify(postData),
+  })
+    .then((response) => response.json())
+    .then((data) => console.log(data));
 });
 
 function populateTable(data) {
   let tbody = ``;
   data.forEach((item) => {
-    tbody += `<tr onclick="updateUrl('${item.Id}')"><td>${item.Address}</td><td>${item.Notes}</td></a></tr>`;
+    tbody += `
+    <tr onclick="updateUrl('${item.Id}')">
+    <td>${item.Address.split(',')[0]}</td>
+    <td>${item.Address.split(',')[1]}</td>
+    <td>${item.Address.split(',')[2]}</td>
+    <td>${item.Notes}</td>
+    </tr>`;
   });
   table.innerHTML += tbody;
 }
@@ -103,12 +121,12 @@ function populateTable(data) {
 function setEntry(data) {
   note.value = data[0].Notes;
   const values = data[0].Address.split(',');
-  street.value = values[0];
+  street.value = values[2];
   document
-    .evaluate(`//option[text()="${values[2].trim()}"]`, document)
+    .evaluate(`//option[text()="${values[0].trim().toLowerCase()}"]`, document)
     .iterateNext().selected = 'selected';
   selectedVoivo = voivodeshipSelect.value;
-  fetchCities();
+  fetchCities(values[1]);
 }
 
 function updateUrl(id) {
